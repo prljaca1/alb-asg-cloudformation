@@ -1,0 +1,35 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "This template creates VPC,ALB and ASG",
+
+    "Parameters": {
+        "WebServerKeyName": {
+            "Description": "This key is used for ssh into EC2 instance",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "Resources": {
+            "VPC": {
+                "Type": "AWS::EC2::VPC",
+                "Properties": {
+                    "CidrBlock": "10.99.0.0/16",
+                    "EnableDnsHostnames" : true,
+                    "EnableDnsSupport" : true,
+                    "InstanceTenancy" : "default",
+                    "Tags": [ {"Key": "Name", "Value": "BlogVPC"} ]
+                }
+            },
+            "InternetGateWay": {
+                "Type": "AWS::EC2::InternetGateway",
+                "Properties": {
+                    "Tags": [ { "Key": "Name", "Value": "BlogIGW"} ]
+                }
+            },
+            "VPCGateWayAttachmet": {
+                "Type": "AWS::EC2::VPCGatewayAttachment",
+                "Properties": {
+                    "InternetGatewayId": {"Ref": "InternetGateWay"},
+                    "VpcId": {"Ref": "VPc"}
+                }
+            },
+    }
+}
